@@ -51,4 +51,4 @@ framework by default. You can, however, replace it with any other library or
 custom styles.
 
 ## Tutorial
-guide here (docs/getting_started.md).
+guide here [docs/getting_started.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/getting_started.MD).
