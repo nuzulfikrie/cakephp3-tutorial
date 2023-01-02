@@ -46,3 +46,17 @@ INSERT INTO articles (user_id, title, slug, body, published, created, modified)
 VALUES
 (1, 'First Post', 'first-post', 'This is the first post.', 1, now(), now());
 ```
+
+
+-- custom new tables
+
+CREATE TABLE tickets (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    ticket_title VARCHAR(255) NOT NULL,
+    ticket_message TEXT,
+    ticket_status VARCHAR(255) NOT NULL,
+    created DATETIME,
+    modified DATETIME,
+    FOREIGN KEY user_key (user_id) REFERENCES users(id)
+) CHARSET=utf8mb4;
