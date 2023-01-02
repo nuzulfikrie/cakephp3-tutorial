@@ -52,3 +52,5 @@ custom styles.
 
 ## Tutorial
 guide here [docs/getting_started.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/getting_started.MD).
+
+SQL here [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/database_sql.md)
