@@ -97,7 +97,9 @@ bin/cake server -p 8765
 
 ````
 
+## Next we create a model,a controller, and a view for the controller
 
+Continue here [docs/creating_controller.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/creating_controller.md)
 
 
 
