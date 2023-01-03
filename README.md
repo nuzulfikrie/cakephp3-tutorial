@@ -59,7 +59,8 @@ SQL here [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial
 ## Run SQL in your desired MYSQL database
 USE SQL  [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/database_sql.md)
 
-
+## Installing PHP
+Installing PHP Guide 👉 [docs/installing_php.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/installing_php.md)
 ## Server configuration
 Server Configuration [docs/server_configuration.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/server_configuration.md)
 
