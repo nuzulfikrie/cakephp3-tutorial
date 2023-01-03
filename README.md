@@ -59,6 +59,10 @@ SQL here [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial
 ## Run SQL in your desired MYSQL database
 USE SQL  [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/database_sql.md)
 
+
+## Server configuration
+Server Configuration [docs/server_configuration.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/server_configuration.md)
+
 ## Start cakephp 3 local server
 ```
 bin/cake server -p 8765
