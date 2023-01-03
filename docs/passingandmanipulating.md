@@ -73,7 +73,7 @@ class ArticlesController extends AppController
   {
     $article = $this->newEntity($data);
     if($this->save($article)){
-      return $article ;
+      return $article;
     }
     return false;
   }

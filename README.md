@@ -106,7 +106,8 @@ bin/cake server -p 8765
 
 Continue here [docs/creating_controller.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/creating_controller.md)
 
-
+## guide passing data and manipulating
+guide here [docs/passingandmanipulating.md](
 
 
 
