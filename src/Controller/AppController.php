@@ -52,4 +52,11 @@ class AppController extends Controller
          */
         //$this->loadComponent('Security');
     }
+
+    // public function beforeFilter(Event $event)
+    // {
+    //     $action = $this->request->getParam('action');
+    //     if($action === 'create')
+
+    // }
 }

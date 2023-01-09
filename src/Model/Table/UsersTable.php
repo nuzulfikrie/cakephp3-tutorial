@@ -85,4 +85,15 @@ class UsersTable extends Table
 
         return $rules;
     }
+    /***
+     *  find user by first name 
+     */
+    public function findUserByName(string $firstName)
+    {
+        return $this->find('all', [
+            'conditions' => [
+                'Users.first_name' => $firstName,
+            ],
+        ])->first();
+    }
 }

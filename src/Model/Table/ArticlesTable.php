@@ -102,4 +102,6 @@ class ArticlesTable extends Table
 
         return $rules;
     }
+
+
 }

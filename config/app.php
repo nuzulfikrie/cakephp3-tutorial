@@ -273,7 +273,7 @@ return [
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            'username' => 'cakephp3',
+            'username' => 'najmi',
             'password' => '123456',
             'database' => 'cms',
             /*
@@ -306,7 +306,21 @@ return [
 
             'url' => env('DATABASE_URL', null),
         ],
-
+        'debug_kit' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => 'localhost',
+            'username' => 'najmi',
+            'password' => '123456',
+            'database' => 'debugkit',
+            'timezone' => 'UTC',
+            'flags' => [],
+            'cacheMetadata' => true,
+            'log' => false,
+            'quoteIdentifiers' => false,
+            'url' => env('DATABASE_URL', null),
+        ],
         /*
          * The test connection is used during the test suite.
          */
@@ -316,9 +330,9 @@ return [
             'persistent' => false,
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
-            'username' => 'my_app',
-            'password' => 'secret',
-            'database' => 'test_myapp',
+            'username' => 'najmi',
+            'password' => '123456',
+            'database' => 'test',
             //'encoding' => 'utf8mb4',
             'timezone' => 'UTC',
             'cacheMetadata' => true,

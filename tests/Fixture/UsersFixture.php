@@ -16,6 +16,10 @@ class UsersFixture extends TestFixture
     // @codingStandardsIgnoreStart
     public $fields = [
         'id' => ['type' => 'integer', 'length' => null, 'unsigned' => false, 'null' => false, 'default' => null, 'comment' => '', 'autoIncrement' => true, 'precision' => null],
+        'username' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_0900_ai_ci', 'comment' => 'ini username', 'precision' => null, 'fixed' => null],
+        'first_name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_0900_ai_ci', 'comment' => 'ini first name', 'precision' => null, 'fixed' => null],
+        'last_name' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_0900_ai_ci', 'comment' => 'ini last name ', 'precision' => null, 'fixed' => null],
+
         'email' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_0900_ai_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'password' => ['type' => 'string', 'length' => 255, 'null' => false, 'default' => null, 'collate' => 'utf8mb4_0900_ai_ci', 'comment' => '', 'precision' => null, 'fixed' => null],
         'created' => ['type' => 'datetime', 'length' => null, 'null' => true, 'default' => null, 'comment' => '', 'precision' => null],
@@ -39,7 +43,20 @@ class UsersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
+                'username' =>'mariano',
+                'first_name' => 'Mario',
+                'last_name' => 'Pereira',
                 'email' => 'Lorem ipsum dolor sit amet',
+                'password' => 'Lorem ipsum dolor sit amet',
+                'created' => '2023-01-02 04:47:29',
+                'modified' => '2023-01-02 04:47:29',
+            ],
+            [
+                'id' => 3,
+                'username' =>'karimronaldo',
+                'first_name' => 'Karimronaldo',
+                'last_name' => 'Doe',
+                'email' => 'name@abe.com',
                 'password' => 'Lorem ipsum dolor sit amet',
                 'created' => '2023-01-02 04:47:29',
                 'modified' => '2023-01-02 04:47:29',
