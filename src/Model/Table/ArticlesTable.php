@@ -1,9 +1,11 @@
 <?php
+
 namespace App\Model\Table;
 
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
 use Cake\Validation\Validator;
 
 /**
@@ -101,5 +103,37 @@ class ArticlesTable extends Table
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
         return $rules;
+    }
+
+
+    public function findAllArticles()
+    {
+        $articles = $this->find('all');
+        return $articles;
+    }
+
+    /**
+     * Find article by tag
+     *
+     * @param string $tag
+     * @return array|null
+     */
+    public function findArticleByTag(string $tag): ?array
+    {
+        $this->Tags = TableRegistry::getTableLocator()->get('Tags');
+        $tags = $this->Tags->findByTitle($tag)->contain(['ArticlesTags'])->select()->toList();
+
+        foreach($tags as $t){
+            $idArticle[] =  $t->id;
+        }
+
+        return $this->find('all',
+        [
+            'conditions' => [
+                'Articles.id IN' => $idArticle,
+                        ],
+            'contains' => ['Tags'],
+        ])->toList();
+
     }
 }

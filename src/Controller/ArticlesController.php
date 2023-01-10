@@ -22,7 +22,11 @@ class ArticlesController extends AppController
         $this->paginate = [
             'contain' => ['Users'],
         ];
-        $articles = $this->paginate($this->Articles);
+
+        $articles = $this->Articles->findAllArticles();
+
+
+        $articles = $this->paginate($articles);
 
         $this->set(compact('articles'));
     }
@@ -34,11 +38,18 @@ class ArticlesController extends AppController
      * @return \Cake\Http\Response|null
      * @throws \Cake\Datasource\Exception\RecordNotFoundException When record not found.
      */
-    public function view($id = null)
+    public function view($id = null) // /articles/view/:id
     {
-        $article = $this->Articles->get($id, [
-            'contain' => ['Users', 'Tags'],
-        ]);
+        // $article = $this->Articles->get($id, [
+        //     'contain' => ['Users', 'Tags'],
+        // ]);
+
+
+        // $article = $this->Articles
+        // ->find('all')->where(['Articles.id' => $id])->contain(['Users', 'Tags'])->first();
+        $article = $this->Articles
+        ->find('all')->where(['Articles.id' => $id])->first();
+        \Cake\Log\Log::debug($article);
 
         $this->set('article', $article);
     }

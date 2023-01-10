@@ -45,6 +45,10 @@ class TagsTable extends Table
             'targetForeignKey' => 'article_id',
             'joinTable' => 'articles_tags',
         ]);
+        $this->hasMany('ArticlesTags',[
+            'foreignKey' => 'tag_id',
+            'joinType' => 'INNER',
+        ]);
     }
 
     /**

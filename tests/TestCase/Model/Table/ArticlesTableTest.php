@@ -24,6 +24,8 @@ class ArticlesTableTest extends TestCase
      */
     public $fixtures = [
         'app.Articles',
+        'app.Tags',
+        'app.ArticlesTags'
     ];
 
     /**
@@ -57,6 +59,15 @@ class ArticlesTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertInstanceOf(ArticlesTable::class, $this->Articles);
+        //$this->markTestIncomplete('Not implemented yet.');
+    }
+
+    public function testFindArticleByTag()
+    {
+
+        $r = $this->Articles->findArticleByTag('tag two');
+        $this->assertNotEmpty($r);
+        //$this->markTestIncomplete('Not implemented yet.');
     }
 }
