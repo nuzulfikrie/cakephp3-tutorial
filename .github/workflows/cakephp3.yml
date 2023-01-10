@@ -27,8 +27,7 @@ jobs:
         ports:
           - 3306:3306
         env:
-          MYSQL_USER: 'root'
-          MYSQL_PASSWORD: 'cakephp3'
+          MYSQL_ROOT_PASSWORD: 'cakephp3'
 
     steps:
       - uses: actions/checkout@v3
