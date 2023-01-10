@@ -14,20 +14,21 @@ jobs:
       fail-fast: false
       matrix:
         php-version: ['7.4']
-        db-type: ['sqlite', 'mysql', 'pgsql']
+        db-type: ['mysql']
         prefer-lowest: ['']
         include:
           - php-version: '7.4'
-            db-type: 'sqlite'
+            db-type: 'mysql'
             prefer-lowest: 'prefer-lowest'
 
     services:
-      postgres:
-        image: postgres
+      mysql:
+        image: mysql
         ports:
-          - 5432:5432
+          - 3306:3306
         env:
-          POSTGRES_PASSWORD: postgres
+          MYSQL_USER: 'root'
+          MYSQL_PASSWORD: 'cakephp3'
 
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +37,7 @@ jobs:
         if: matrix.db-type == 'mysql'
         run: |
           sudo service mysql start
-          mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE cakephp;'
+          mysql -h 127.0.0.1 -u root -proot -e 'CREATE DATABASE tests;'
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
