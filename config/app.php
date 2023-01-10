@@ -273,8 +273,8 @@ return [
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            'username' => 'cakephp3',
-            'password' => '123456',
+            'username' => 'root',
+            'password' => 'cakephp3',
             'database' => 'cms',
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
@@ -316,8 +316,8 @@ return [
             'persistent' => false,
             'host' => 'localhost',
             //'port' => 'non_standard_port_number',
-            'username' => 'cakephp3',
-            'password' => '123456',
+            'username' => 'root',
+            'password' => 'cakephp3',
             'database' => 'cms',
             //'encoding' => 'utf8mb4',
             'timezone' => 'UTC',
