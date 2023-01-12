@@ -39,7 +39,7 @@ jobs:
           # You can also use ext-apcu or ext-memcached instead of ext-redis
           # Install memcached if using ext-memcached
           extensions: mbstring, intl, redis, pdo_mysql
-          coverage: pcov
+          coverage: xdebug
 
       # Local MySQL service in GitHub hosted environments is disabled by default.
       # If you are using it instead of service containers, make sure you start it.
