@@ -93,7 +93,6 @@ jobs:
         MAIL_PASSWORD: 69e83f96de9863
         MAIL_PORT: 2525
         MAIL_FROM: webmaster@eaglenavigator.com
-        MAIL_FROM: webmaster@eaglenavigator.com
         DB_HOST: localhost
         DB_PORT: 3306
         DB_DATABASE: cms
