@@ -261,7 +261,7 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => env('DB_HOST'),
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -271,9 +271,9 @@ return [
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            'username' => 'najmi',
-            'password' => '123456',
-            'database' => 'cms',
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DATABASE'),
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
              */
@@ -308,10 +308,10 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
-            'username' => 'najmi',
-            'password' => '123456',
-            'database' => 'debugkit',
+            'host' => env('DB_HOST'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DEBUG_DATABASE'),
             'timezone' => 'UTC',
             'flags' => [],
             'cacheMetadata' => true,
@@ -326,11 +326,11 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => env('DB_HOST'),
             //'port' => 'non_standard_port_number',
-            'username' => 'najmi',
-            'password' => '123456',
-            'database' => 'test',
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_TESTS_DATABASE'),
             //'encoding' => 'utf8mb4',
             'timezone' => 'UTC',
             'cacheMetadata' => true,

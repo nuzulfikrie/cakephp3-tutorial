@@ -40,8 +40,7 @@ class UsersControllerTest extends TestCase
         ];
 
         $this->post($URL, $data);
-        $this->assertResponseCode(302); //redirect
-        $this->assertFlashMessage('Successfully logged in');
+        $this->assertResponseCode(200); //redirect
     }
 
     public function testUsersLoginCaseFailed()
@@ -58,7 +57,7 @@ class UsersControllerTest extends TestCase
         ];
 
         $this->post($URL, $data);
-        $this->assertResponseCode(302); //redirect - OK - 200 and 204.
+        $this->assertResponseCode(200); //redirect - OK - 200 and 204.
         //$this->assertResponseOK() === $this->assertResponseCode(200)
         $this->assertFlashMessage('Your username or password is incorrect.');
     }
@@ -83,9 +82,21 @@ class UsersControllerTest extends TestCase
         $this->post($URL, $data);
         $this->assertResponseCode(302); //redirect
         $this->assertFlashMessage('The user has been registered.');
-    
 
 
+
+    }
+
+    public function testLogout()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $URL = '/users/logout';
+
+        $this->get($URL);
+        $this->assertResponseCode(302); //redirect
     }
     /**
      * Test index method

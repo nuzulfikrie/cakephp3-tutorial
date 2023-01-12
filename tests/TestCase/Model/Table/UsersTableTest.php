@@ -68,7 +68,6 @@ class UsersTableTest extends TestCase
 
         $result = $this->Users->findUserByName($user);
 
-        dump($result);
 
         $this->assertNotEmpty($result);
     }
@@ -87,6 +86,21 @@ class UsersTableTest extends TestCase
 
         $this->assertInstanceOf('\App\Model\Entity\User',$result);
         $this->assertNotEquals($result,false );
+    }
+
+    public function testRegisterUserHappy()
+    {
+        $dataTest = [
+            'username' =>'melissasaila',
+            'first_name' => 'Melissa',
+            'last_name' => 'Do',
+            'email' => 'do.melissa@abc.com',
+            'password' => 'KucingGarong22',
+        ];
+
+        $result = $this->Users->registerUser($dataTest);
+        $this->assertInstanceOf('\App\Model\Entity\User',$result);
+        $this->assertNotEquals($result,false);
     }
 
     // /**

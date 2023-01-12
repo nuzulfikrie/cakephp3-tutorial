@@ -21,16 +21,16 @@ class UsersmailerMailer extends Mailer
         $email = $userdata['email'];
         $name = $userdata['name'];
         $tokenExpires = $userdata['expires'];
-        $this->setTransport('default')->from('$najmi@abc.com')
-            ->to($userdata['email'])
-            ->subject(sprintf('Welcome %s', $userdata['name']))
-            ->template('welcome') // By default template with same name as method name is used
+        $this->setTransport('default')->setFrom('$najmi@abc.com')
+            ->setTo($userdata['email'])
+            ->setSubject(sprintf('Welcome %s', $userdata['name']))
             ->set('email', $email)
             ->set('name', $name)
             ->set('token', $token)
             ->set('token_expires', $tokenExpires)
             ->setEmailFormat('html');
-          
+        $this->viewBuilder()->setTemplate('welcome');
+
     }
 
     public function resetPassword($user)

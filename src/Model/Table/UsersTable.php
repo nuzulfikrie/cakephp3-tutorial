@@ -6,7 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Mailer\MailerAwareTrait;
-
+use Cake\Core\Exception\Exception;
 /**
  * Users Model
  *
@@ -66,8 +66,8 @@ class UsersTable extends Table
             ->scalar('username')
             ->maxLength('username', 255)
             ->requirePresence('username', 'create')
-            ->notEmptyString('username');     
-    
+            ->notEmptyString('username');
+
 
         $validator
             ->email('email')
@@ -97,7 +97,7 @@ class UsersTable extends Table
         return $rules;
     }
     /***
-     *  find user by first name 
+     *  find user by first name
      */
     public function findUserByName(string $username)
     {
@@ -112,13 +112,14 @@ class UsersTable extends Table
         return $query->find('all');
     }
 
-
     /**
-     * -- logic register user 
-     */
+     * register user
+     * @param array $data
+     * @return \App\Model\Entity\User|false $user
+     * */
     public function registerUser(array $data){
-        
-        //logic for token 
+
+        //logic for token
         $user = $this->newEntity();
         $user = $this->patchEntity($user, $data);
 
@@ -126,7 +127,7 @@ class UsersTable extends Table
         $user->token = $token;
         $user->token_expires = date("Y-m-d H:i:s", time() + 3600);
 
-     
+
 
         $user = $this->save($user);
 
@@ -142,10 +143,16 @@ class UsersTable extends Table
                 'token' => $token,
                 'expires' => date("Y-m-d H:i:s", time() + 3600),
             ];
-            $this->getMailer('Usersmailer')->send('welcome', [$dataEmail]);
+            try {
+                $this->getMailer('Usersmailer')->send('welcome', [$dataEmail]);
+
+            } catch (\Exception $th) {
+                throw new Exception("Error Processing Request", 1);
+
+            }
         }
 
-
+        return $user;
 
     }
 }

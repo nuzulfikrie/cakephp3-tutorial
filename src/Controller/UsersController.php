@@ -68,7 +68,7 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
-    
+
     /**
      * Add method
      *
@@ -76,7 +76,7 @@ class UsersController extends AppController
      */
     public function register()
     {
-        
+
         if ($this->request->is('post')) {
             $user = $this->Users->registerUser($this->request->getData());
             if ($user) {
@@ -85,7 +85,7 @@ class UsersController extends AppController
                 return $this->redirect(['action' => 'index']);
             }
             $this->Flash->error(__('The user could not be saved. Please, try again.'));
-            
+
         }
     }
 
@@ -136,37 +136,40 @@ class UsersController extends AppController
     public function login()
     {
         //$result = $this->Authentication->getResult();
-        $result = $this->request->getAttribute('authentication')->getResult();
+        if($this->request->is('post')){
+            $result = $this->request->getAttribute('authentication')->getResult();
 
+            if ($result->isValid()) {
+                $authService = $this->Authentication->getAuthenticationService();
 
+                // Assuming you are using the `Password` identifier.
+                if ($authService->identifiers()->get('Password')->needsPasswordRehash()) {
+                    // Rehash happens on save.
+                    $user = $this->Users->get($this->Authentication->getIdentityData('id'));
+                    $user->password = $this->request->getData('password');
+                    $this->Users->save($user);
+                }
 
+                // Redirect to a logged in page
+                return $this->redirect([
+                    'controller' => 'Pages',
+                    'action' => 'display',
+                    'home'
+                ]);
+            } else {
+                $this->Flash->error('Your username or password is incorrect.');
 
-
-        // regardless of POST or GET, redirect if user is logged in
-        if ($result->isValid()) {
-            $authService = $this->Authentication->getAuthenticationService();
-    
-            // Assuming you are using the `Password` identifier.
-            if ($authService->identifiers()->get('Password')->needsPasswordRehash()) {
-                // Rehash happens on save.
-                $user = $this->Users->get($this->Authentication->getIdentityData('id'));
-                $user->password = $this->request->getData('password');
-                $this->Users->save($user);
             }
-    
-            // Redirect to a logged in page
-            return $this->redirect([
-                'controller' => 'Pages',
-                'action' => 'display',
-                'home'
-            ]);
+
         }
-        
+
+
     }
     public function logout()
     {
+
         $this->Flash->success('You are now logged out.');
-        return $this->redirect($this->Auth->logout());
+        return $this->redirect($this->Authentication->logout());
     }
 
 }
