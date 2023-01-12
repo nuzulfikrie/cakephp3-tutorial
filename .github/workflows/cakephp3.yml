@@ -1,6 +1,6 @@
 # GitHub Action for CakePHP with MySQL and Redis
 # Tested with https://github.com/cakephp/app
-# nuzul fikrie salam version for testing cakephp v3.10.18
+# nuzul fikrie salam version for testing cakephp v3.10.18 test comment
 name: Testing CakePHP with MySQL
 
 on:
@@ -138,6 +138,5 @@ jobs:
         key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}
 
     - name: Composer install
-
     - name: Run PHP CodeSniffer
       run: composer cs-check
