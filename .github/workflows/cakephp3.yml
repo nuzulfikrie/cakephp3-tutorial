@@ -61,6 +61,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          composer update
           composer install --no-progress --prefer-dist --optimize-autoloader
           composer run-script post-install-cmd
 
