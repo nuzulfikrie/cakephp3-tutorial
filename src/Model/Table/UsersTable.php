@@ -5,7 +5,8 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-
+use Cake\Mailer\MailerAwareTrait;
+use Cake\Core\Exception\Exception;
 /**
  * Users Model
  *
@@ -24,6 +25,9 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table
 {
+
+    use MailerAwareTrait;
+
     /**
      * Initialize method
      *
@@ -59,6 +63,13 @@ class UsersTable extends Table
             ->allowEmptyString('id', null, 'create');
 
         $validator
+            ->scalar('username')
+            ->maxLength('username', 255)
+            ->requirePresence('username', 'create')
+            ->notEmptyString('username');
+
+
+        $validator
             ->email('email')
             ->requirePresence('email', 'create')
             ->notEmptyString('email');
@@ -84,5 +95,64 @@ class UsersTable extends Table
         $rules->add($rules->isUnique(['email']));
 
         return $rules;
+    }
+    /***
+     *  find user by first name
+     */
+    public function findUserByName(string $username)
+    {
+        return $this->find('all', [
+            'conditions' => [
+                'Users.first_name' => $username,
+            ],
+        ])->first();
+    }
+
+    public function findAuth(\Cake\ORM\Query $query,array $options){
+        return $query->find('all');
+    }
+
+    /**
+     * register user
+     * @param array $data
+     * @return \App\Model\Entity\User|false $user
+     * */
+    public function registerUser(array $data){
+
+        //logic for token
+        $user = $this->newEntity();
+        $user = $this->patchEntity($user, $data);
+
+        $token = sha1(rand(0,100) . time());
+        $user->token = $token;
+        $user->token_expires = date("Y-m-d H:i:s", time() + 3600);
+
+
+
+        $user = $this->save($user);
+
+        if($user){
+            //send email  to user
+
+            $email = $user->email;
+            $name = $user->first_name . ' ' . $user->last_name;
+
+            $dataEmail = [
+                'email' => $email,
+                'name' => $name,
+                'token' => $token,
+                'expires' => date("Y-m-d H:i:s", time() + 3600),
+            ];
+            try {
+                $this->getMailer('Usersmailer')->send('welcome', [$dataEmail]);
+
+            } catch (\Exception $th) {
+                throw new Exception("Error Processing Request", 1);
+
+            }
+        }
+
+        return $user;
+
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\UsersController;
@@ -24,6 +25,79 @@ class UsersControllerTest extends TestCase
         'app.Articles',
     ];
 
+    // 'users/login' . -> '/login'
+    public function testUsersLoginCaseSuccess()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $URL = '/users/login';
+
+        $data = [
+            "email" => "s202020393@studentmail.unimap.edu.my",
+            "password" => "najmi",
+        ];
+
+        $this->post($URL, $data);
+        $this->assertResponseCode(200); //redirect
+    }
+
+    public function testUsersLoginCaseFailed()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $URL = '/users/login';
+
+        $data = [
+            "email" => "s202020393@studentmail.unimap.edu.my",
+            "password" => "najmixxxx",
+        ];
+
+        $this->post($URL, $data);
+        $this->assertResponseCode(200); //redirect - OK - 200 and 204.
+        //$this->assertResponseOK() === $this->assertResponseCode(200)
+        $this->assertFlashMessage('Your username or password is incorrect.');
+    }
+
+    public function testRegisterUserCaseHappy()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $URL = '/users/register';
+
+        $data = [
+
+            'username' => 'najmimahari',
+            'first_name' => 'najmi',
+            'last_name' => 'mahari',
+            'email' => 'ahmadnajmi02@gmail.com',
+            'password' => 'najmi123',
+        ];
+
+        $this->post($URL, $data);
+        $this->assertResponseCode(302); //redirect
+        $this->assertFlashMessage('The user has been registered.');
+
+
+
+    }
+
+    public function testLogout()
+    {
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $this->enableRetainFlashMessages();
+
+        $URL = '/users/logout';
+
+        $this->get($URL);
+        $this->assertResponseCode(302); //redirect
+    }
     /**
      * Test index method
      *

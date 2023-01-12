@@ -58,26 +58,68 @@ class UsersTableTest extends TestCase
      */
     public function testInitialize()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->assertInstanceOf('App\Model\Table\UsersTable', $this->Users);
+        //$this->markTestIncomplete('Not implemented yet.');
     }
 
-    /**
-     * Test validationDefault method
-     *
-     * @return void
-     */
-    public function testValidationDefault()
+    public function testfindUserByName()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $user = 'Karimronaldo';
+
+        $result = $this->Users->findUserByName($user);
+
+
+        $this->assertNotEmpty($result);
     }
 
-    /**
-     * Test buildRules method
-     *
-     * @return void
-     */
-    public function testBuildRules()
+    public function testSave()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $dataTest = [
+            'username' =>'ahmadRambo',
+            'first_name' => 'Ahmad',
+            'last_name' => 'Doe',
+            'email' => 'ahmad@abe.com',
+            'password' => 'KucingGarong22',
+        ];
+        $user = $this->Users->newEntity($dataTest);
+        $result = $this->Users->save($user);
+
+        $this->assertInstanceOf('\App\Model\Entity\User',$result);
+        $this->assertNotEquals($result,false );
     }
+
+    public function testRegisterUserHappy()
+    {
+        $dataTest = [
+            'username' =>'melissasaila',
+            'first_name' => 'Melissa',
+            'last_name' => 'Do',
+            'email' => 'do.melissa@abc.com',
+            'password' => 'KucingGarong22',
+        ];
+
+        $result = $this->Users->registerUser($dataTest);
+        $this->assertInstanceOf('\App\Model\Entity\User',$result);
+        $this->assertNotEquals($result,false);
+    }
+
+    // /**
+    //  * Test validationDefault method
+    //  *
+    //  * @return void
+    //  */
+    // public function testValidationDefault()
+    // {
+    //     $this->markTestIncomplete('Not implemented yet.');
+    // }
+
+    // /**
+    //  * Test buildRules method
+    //  *
+    //  * @return void
+    //  */
+    // public function testBuildRules()
+    // {
+    //     $this->markTestIncomplete('Not implemented yet.');
+    // }
 }

@@ -1,12 +1,18 @@
 <?php
+
 namespace App\Model\Entity;
 
+use Authentication\IdentityInterface;
+use Cake\Auth\DefaultPasswordHasher;
 use Cake\ORM\Entity;
 
 /**
  * User Entity
  *
  * @property int $id
+ * @property string|null $username
+ * @property string $first_name
+ * @property string $last_name
  * @property string $email
  * @property string $password
  * @property \Cake\I18n\FrozenTime|null $created
@@ -14,7 +20,7 @@ use Cake\ORM\Entity;
  *
  * @property \App\Model\Entity\Article[] $articles
  */
-class User extends Entity
+class User extends Entity implements IdentityInterface
 {
     /**
      * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -26,8 +32,13 @@ class User extends Entity
      * @var array
      */
     protected $_accessible = [
+        'username' => true,
+        'first_name' => true,
+        'last_name' => true,
         'email' => true,
         'password' => true,
+        'token'=>true,
+        'token_expires'=>true,
         'created' => true,
         'modified' => true,
         'articles' => true,
@@ -41,4 +52,28 @@ class User extends Entity
     protected $_hidden = [
         'password',
     ];
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getIdentifier()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Authentication\IdentityInterface method
+     */
+    public function getOriginalData()
+    {
+        return $this;
+    }
+
+    protected function _setPassword($password)
+    {
+        if (strlen($password) > 0) {
+          return (new DefaultPasswordHasher)->hash($password);
+        }
+    }
+
 }

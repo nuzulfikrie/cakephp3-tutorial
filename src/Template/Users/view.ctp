@@ -27,6 +27,10 @@
             <td><?= h($user->password) ?></td>
         </tr>
         <tr>
+            <th scope="row"><?= __('username') ?></th>
+            <td><?= h($user->username) ?></td>
+        </tr>
+        <tr>
             <th scope="row"><?= __('Id') ?></th>
             <td><?= $this->Number->format($user->id) ?></td>
         </tr>

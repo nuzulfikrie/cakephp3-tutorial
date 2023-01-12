@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -12,6 +13,13 @@ use App\Controller\AppController;
  */
 class UsersController extends AppController
 {
+    public function initialize()
+    {
+        parent::initialize();
+        $this->Authentication->allowUnauthenticated(['login', 'register','welcome']);
+
+        // Add the 'add' action to the allowed actions list.
+    }
     /**
      * Index method
      *
@@ -60,6 +68,27 @@ class UsersController extends AppController
         $this->set(compact('user'));
     }
 
+
+    /**
+     * Add method
+     *
+     * @return \Cake\Http\Response|null Redirects on successful add, renders view otherwise.
+     */
+    public function register()
+    {
+
+        if ($this->request->is('post')) {
+            $user = $this->Users->registerUser($this->request->getData());
+            if ($user) {
+                $this->Flash->success(__('The user has been registered.'));
+
+                return $this->redirect(['action' => 'index']);
+            }
+            $this->Flash->error(__('The user could not be saved. Please, try again.'));
+
+        }
+    }
+
     /**
      * Edit method
      *
@@ -103,4 +132,44 @@ class UsersController extends AppController
 
         return $this->redirect(['action' => 'index']);
     }
+
+    public function login()
+    {
+        //$result = $this->Authentication->getResult();
+        if($this->request->is('post')){
+            $result = $this->request->getAttribute('authentication')->getResult();
+
+            if ($result->isValid()) {
+                $authService = $this->Authentication->getAuthenticationService();
+
+                // Assuming you are using the `Password` identifier.
+                if ($authService->identifiers()->get('Password')->needsPasswordRehash()) {
+                    // Rehash happens on save.
+                    $user = $this->Users->get($this->Authentication->getIdentityData('id'));
+                    $user->password = $this->request->getData('password');
+                    $this->Users->save($user);
+                }
+
+                // Redirect to a logged in page
+                return $this->redirect([
+                    'controller' => 'Pages',
+                    'action' => 'display',
+                    'home'
+                ]);
+            } else {
+                $this->Flash->error('Your username or password is incorrect.');
+
+            }
+
+        }
+
+
+    }
+    public function logout()
+    {
+
+        $this->Flash->success('You are now logged out.');
+        return $this->redirect($this->Authentication->logout());
+    }
+
 }

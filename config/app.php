@@ -235,13 +235,11 @@ return [
      */
     'Email' => [
         'default' => [
-            'transport' => 'default',
-            'from' => 'you@localhost',
-            /*
-             * Will by default be set to config value of App.encoding, if that exists otherwise to UTF-8.
-             */
-            //'charset' => 'utf-8',
-            //'headerCharset' => 'utf-8',
+            'host' =>  env('MAIL_HOST'),
+            'port' => env('MAIL_PORT'),
+            'username' => env('MAIL_USERNAME'),
+            'password' => env('MAIL_PASSWORD'),
+            'className' => 'Smtp',
         ],
     ],
 
@@ -263,7 +261,7 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => env('DB_HOST'),
             /*
              * CakePHP will use the default DB port based on the driver selected
              * MySQL on MAMP uses port 8889, MAMP users will want to uncomment
@@ -273,9 +271,9 @@ return [
             /*
              * It is recommended to set these options through your environment or app_local.php
              */
-            'username' => 'root',
-            'password' => 'cakephp3',
-            'database' => 'cms',
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DATABASE'),
             /*
              * You do not need to set this flag to use full utf-8 encoding (internal default since CakePHP 3.6).
              */
@@ -306,7 +304,21 @@ return [
 
             'url' => env('DATABASE_URL', null),
         ],
-
+        'debug_kit' => [
+            'className' => Connection::class,
+            'driver' => Mysql::class,
+            'persistent' => false,
+            'host' => env('DB_HOST'),
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_DEBUG_DATABASE'),
+            'timezone' => 'UTC',
+            'flags' => [],
+            'cacheMetadata' => true,
+            'log' => false,
+            'quoteIdentifiers' => false,
+            'url' => env('DATABASE_URL', null),
+        ],
         /*
          * The test connection is used during the test suite.
          */
@@ -314,11 +326,11 @@ return [
             'className' => Connection::class,
             'driver' => Mysql::class,
             'persistent' => false,
-            'host' => 'localhost',
+            'host' => env('DB_HOST'),
             //'port' => 'non_standard_port_number',
-            'username' => 'root',
-            'password' => 'cakephp3',
-            'database' => 'cms',
+            'username' => env('DB_USERNAME'),
+            'password' => env('DB_PASSWORD'),
+            'database' => env('DB_TESTS_DATABASE'),
             //'encoding' => 'utf8mb4',
             'timezone' => 'UTC',
             'cacheMetadata' => true,
