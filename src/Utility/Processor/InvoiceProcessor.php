@@ -7,7 +7,7 @@ use App\Utility\AbstractUtility;
 
 class InvoiceProcessor extends AbstractUtility{
 
-    public static function toUpperCase($string){
+    public static function  ($string){
         return strtoupper($string);
 
     }

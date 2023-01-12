@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Test\Fixture;
 
 use Cake\TestSuite\Fixture\TestFixture;
@@ -43,7 +44,7 @@ class UsersFixture extends TestFixture
         $this->records = [
             [
                 'id' => 1,
-                'username' =>'mariano',
+                'username' => 'mariano',
                 'first_name' => 'Mario',
                 'last_name' => 'Pereira',
                 'email' => 'Lorem ipsum dolor sit amet',
@@ -52,8 +53,8 @@ class UsersFixture extends TestFixture
                 'modified' => '2023-01-02 04:47:29',
             ],
             [
-                'id' => 3,
-                'username' =>'karimronaldo',
+                'id' => 2,
+                'username' => 'karimronaldo',
                 'first_name' => 'Karimronaldo',
                 'last_name' => 'Doe',
                 'email' => 'name@abe.com',
@@ -61,6 +62,20 @@ class UsersFixture extends TestFixture
                 'created' => '2023-01-02 04:47:29',
                 'modified' => '2023-01-02 04:47:29',
             ],
+
+
+            array(
+                "id" => 3,
+                "username" => "jemi",
+                'first_name' => 'Subki',
+                'last_name' => 'Latif',
+                "email" => "s202020393@studentmail.unimap.edu.my",
+                "password" => "najmi",
+                "created" => "2023-01-10 03:19:38",
+                "modified" => "2023-01-10 03:19:38",
+            ),
+
+
         ];
         parent::init();
     }

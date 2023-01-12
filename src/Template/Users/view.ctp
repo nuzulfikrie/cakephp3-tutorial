@@ -27,12 +27,8 @@
             <td><?= h($user->password) ?></td>
         </tr>
         <tr>
-            <th scope="row"><?= __('First Name') ?></th>
-            <td><?= h($user->firstName) ?></td>
-        </tr>
-        <tr>
-            <th scope="row"><?= __('Last Name') ?></th>
-            <td><?= h($user->lastName) ?></td>
+            <th scope="row"><?= __('username') ?></th>
+            <td><?= h($user->username) ?></td>
         </tr>
         <tr>
             <th scope="row"><?= __('Id') ?></th>

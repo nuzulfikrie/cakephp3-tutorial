@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,8 +13,12 @@
  * @since     3.3.0
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App;
 
+use Authentication\AuthenticationService;
+use Authentication\AuthenticationServiceProviderInterface;
+use Authentication\Middleware\AuthenticationMiddleware;
 use Cake\Core\Configure;
 use Cake\Core\Exception\MissingPluginException;
 use Cake\Error\Middleware\ErrorHandlerMiddleware;
@@ -22,13 +27,16 @@ use Cake\Routing\Middleware\AssetMiddleware;
 use Cake\Routing\Middleware\RoutingMiddleware;
 use Cake\Http\Middleware\CsrfProtectionMiddleware;
 
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+
 /**
  * Application setup class.
  *
  * This defines the bootstrapping logic and middleware layers you
  * want to use in your application.
  */
-class Application extends BaseApplication
+class Application extends BaseApplication implements AuthenticationServiceProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -36,6 +44,7 @@ class Application extends BaseApplication
     public function bootstrap()
     {
         $this->addPlugin('DebugKit');
+        $this->addPlugin('Authentication');
 
         // Call parent to load bootstrap from files.
         parent::bootstrap();
@@ -62,7 +71,8 @@ class Application extends BaseApplication
      * @return \Cake\Http\MiddlewareQueue The updated middleware queue.
      */
     public function middleware($middlewareQueue)
-    {          $csrf = new CsrfProtectionMiddleware();
+    {
+        $csrf = new CsrfProtectionMiddleware();
 
         // Token check will be skipped when callback returns `true`.
         $csrf->whitelistCallback(function ($request) {
@@ -75,6 +85,10 @@ class Application extends BaseApplication
                 return true;
             }
         });
+
+        // Create an authentication middleware object
+        $authentication = new AuthenticationMiddleware($this);
+
         $middlewareQueue
             // Catch any exceptions in the lower layers,
             // and make an error page/response
@@ -84,8 +98,8 @@ class Application extends BaseApplication
             ->add(new AssetMiddleware([
                 'cacheTime' => Configure::read('Asset.cacheTime'),
             ]))
-  
-        
+
+
             // Ensure routing middleware is added to the queue before CSRF protection middleware.
             // Add routing middleware.
             // If you have a large number of routes connected, turning on routes
@@ -94,10 +108,61 @@ class Application extends BaseApplication
             // using it's second constructor argument:
             // `new RoutingMiddleware($this, '_cake_routes_')`
             ->add(new RoutingMiddleware($this))
-           ->add($csrf);
+
+            ->add($csrf)
+            ->add($authentication);
 
         return $middlewareQueue;
     }
+
+    /**
+     * - authentication service middleware
+     */
+    /**
+     * Returns a service provider instance.
+     *
+     * @param \Psr\Http\Message\ServerRequestInterface $request Request
+     * @param \Psr\Http\Message\ResponseInterface $response Response
+     * @return \Authentication\AuthenticationServiceInterface
+     */
+    public function getAuthenticationService(ServerRequestInterface $request, ResponseInterface $response)
+    {
+        $service = new AuthenticationService();
+        $service->setConfig([
+            'unauthenticatedRedirect' => '/users/login',
+            'queryParam' => 'redirect',
+        ]);
+
+        // Load identifiers
+        $service->loadIdentifier('Authentication.Password', [
+            'resolver' => [
+                'className' => 'Authentication.Orm',
+                'userModel' => 'Users',
+                'finder' => 'Auth',
+            ],
+            'fields' => [
+                'username' => 'username',
+                'password' => 'password',
+            ]
+        ]);
+        // Load the authenticators
+        $service->loadAuthenticator('Authentication.Session');
+        $service->loadAuthenticator('Authentication.Form', [
+            'fields' =>  [
+                'username' => 'user_login',
+                'password' => 'password'
+            ],
+            'loginUrl' => '/users/login'
+        ]);
+        return $service;
+    }
+
+
+
+
+
+
+
 
     /**
      * @return void
