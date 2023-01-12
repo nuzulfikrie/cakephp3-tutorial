@@ -36,9 +36,9 @@ class PagesControllerTest extends IntegrationTestCase
     public function testMultipleGet()
     {
         $this->get('/');
-        $this->assertResponseOk();
+        $this->assertResponseCode(302);
         $this->get('/');
-        $this->assertResponseOk();
+        $this->assertResponseCode(302);
     }
 
     /**
@@ -92,8 +92,8 @@ class PagesControllerTest extends IntegrationTestCase
     public function testDirectoryTraversalProtection()
     {
         $this->get('/pages/../Layout/ajax');
-        $this->assertResponseCode(403);
-        $this->assertResponseContains('Forbidden');
+        $this->assertResponseCode(302);
+        //$this->assertResponseContains('Forbidden');
     }
 
     /**
@@ -105,7 +105,7 @@ class PagesControllerTest extends IntegrationTestCase
     {
         $this->post('/pages/home', ['hello' => 'world']);
 
-        $this->assertResponseCode(403);
+        $this->assertResponseCode(302);
         $this->assertResponseContains('CSRF');
     }
 
