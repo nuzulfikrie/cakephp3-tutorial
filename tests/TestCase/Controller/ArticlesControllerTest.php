@@ -1,9 +1,12 @@
 <?php
+
 namespace App\Test\TestCase\Controller;
 
 use App\Controller\ArticlesController;
+use App\Model\Table\ArticlesTable;
 use Cake\TestSuite\IntegrationTestTrait;
 use Cake\TestSuite\TestCase;
+use Cake\ORM\TableRegistry;
 
 /**
  * App\Controller\ArticlesController Test Case
@@ -26,6 +29,30 @@ class ArticlesControllerTest extends TestCase
         'app.ArticlesTags',
     ];
 
+    private $ArticlesTable;
+    /**
+     * setUp method
+     *
+     * @return void
+     */
+    public function setUp()
+    {
+        parent::setUp();
+        $config = TableRegistry::getTableLocator()->exists('ArticlesTable') ? [] : ['className' => ArticlesTable::class];
+        $this->ArticlesTable = TableRegistry::getTableLocator()->get('ArticlesTable', $config);
+    }
+
+    /**
+     * tearDown method
+     *
+     * @return void
+     */
+    public function tearDown()
+    {
+        unset($this->ArticlesTable);
+        TableRegistry::getTableLocator()->clear();
+        parent::tearDown();
+    }
     /**
      * Test index method
      *
@@ -33,7 +60,30 @@ class ArticlesControllerTest extends TestCase
      */
     public function testIndex()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+
+        $user = [
+            'id' => 2,
+            'username' => 'karimronaldo',
+            'first_name' => 'Karimronaldo',
+            'last_name' => 'Doe',
+            'email' => 'name@abe.com',
+            'password' => 'Lorem ipsum dolor sit amet',
+            'created' => '2023-01-02 04:47:29',
+            'modified' => '2023-01-02 04:47:29',
+        ];
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    $user
+                ]
+            ]
+        ]); // sebab kena logged in
+        //'
+        $url = ['controller' => 'Articles', 'action' => 'index', 'plugin' => false, 'prefix' => false];
+        $this->get($url);
+        $this->assertResponseOk();
+        //$this->markTestIncomplete('Not implemented yet.');
     }
 
     /**
@@ -43,7 +93,29 @@ class ArticlesControllerTest extends TestCase
      */
     public function testView()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $user = [
+            'id' => 2,
+            'username' => 'karimronaldo',
+            'first_name' => 'Karimronaldo',
+            'last_name' => 'Doe',
+            'email' => 'name@abe.com',
+            'password' => 'Lorem ipsum dolor sit amet',
+            'created' => '2023-01-02 04:47:29',
+            'modified' => '2023-01-02 04:47:29',
+        ];
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    $user
+                ]
+            ]
+        ]); // sebab kena logged in
+        //'
+        $url = ['controller' => 'Articles', 'action' => 'view', 'plugin' => false, 'prefix' => false, 1];
+
+        $this->get($url);
+        $this->assertResponseOk();
     }
 
     /**
@@ -53,7 +125,40 @@ class ArticlesControllerTest extends TestCase
      */
     public function testAdd()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $user = [
+            'id' => 2,
+            'username' => 'karimronaldo',
+            'first_name' => 'Karimronaldo',
+            'last_name' => 'Doe',
+            'email' => 'name@abe.com',
+            'password' => 'Lorem ipsum dolor sit amet',
+            'created' => '2023-01-02 04:47:29',
+            'modified' => '2023-01-02 04:47:29',
+        ];
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    $user
+                ]
+            ]
+        ]); //
+        $data = [
+            'user_id' => 1,
+            'title' => 'xxxxxxxxx',
+            'slug' => 'Lorem ipsum dolor sit amet',
+            'body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis',
+            'published' => 1,
+
+        ];
+
+
+        $url = ['controller' => 'Articles', 'action' => 'add', 'plugin' => false, 'prefix' => false];
+        $this->post($url, $data);
+
+        $this->assertResponseOk();
     }
 
     /**
@@ -63,7 +168,40 @@ class ArticlesControllerTest extends TestCase
      */
     public function testEdit()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $user = [
+            'id' => 2,
+            'username' => 'karimronaldo',
+            'first_name' => 'Karimronaldo',
+            'last_name' => 'Doe',
+            'email' => 'name@abe.com',
+            'password' => 'Lorem ipsum dolor sit amet',
+            'created' => '2023-01-02 04:47:29',
+            'modified' => '2023-01-02 04:47:29',
+        ];
+
+        $this->session([
+            'Auth' => [
+                'User' => [
+                    $user
+                ]
+            ]
+        ]); //
+
+        $data = [
+
+            'title' => 'Lorem ipsum dolor sit test',
+            'slug' => 'XXXXXXXXXXXXXXXXXX',
+            'body' => 'Lorem SDFDFSDFDSFSF gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+            'published' => 1,
+
+        ];
+
+        $urlEdit = 'articles/edit/1';
+        $this->post($urlEdit, $data);
+
+        $this->assertResponseCode(302);
     }
 
     /**
@@ -73,6 +211,11 @@ class ArticlesControllerTest extends TestCase
      */
     public function testDelete()
     {
-        $this->markTestIncomplete('Not implemented yet.');
+        $this->enableCsrfToken();
+        $this->enableSecurityToken();
+        $url = ['controller' => 'Articles', 'action' => 'delete', 'plugin' => false, 'prefix' => false, 1];
+
+        $this->delete($url);
+        $this->assertResponseCode(302);
     }
 }
