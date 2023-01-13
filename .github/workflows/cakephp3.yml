@@ -1,142 +1,70 @@
 # GitHub Action for CakePHP with MySQL and Redis
 # Tested with https://github.com/cakephp/app
-# nuzul fikrie salam version for testing cakephp v3.10.18 test comment
+# nuzul fikrie salam version for testing cakephp v3.10.18 test comment based on CI/CD with GitHub Actions
 name: Testing CakePHP with MySQL
-
 on:
   push:
     branches:
-      - main
+      - 'main'
   pull_request:
     branches:
       - '*'
 
+permissions:
+  contents: read
+
 jobs:
   testsuite:
-    env:
-      DB: cms
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       fail-fast: false
       matrix:
         php-version: ['7.4']
-        db-type: [ mysql]
-        prefer-lowest: ['']
-        include:
-          - php-version: '7.4'
-            db-type: 'mysql'
-            prefer-lowest: 'prefer-lowest'
-
-    services:
-      redis:
-        image: redis
-        ports:
-          - 6379/tcp
-      memcached:
-        image: memcached
-        ports:
-          - 11211/tcp
+    name: PHP ${{ matrix.php-version }}
 
     steps:
-
-    - name: Setup MySQL 8.0
-      if: matrix.db-type == 'mysql' && matrix.php-version == '7.4'
-      run: docker run --rm --name=mysqld -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=$DB -p 3306:3306 -d mysql:8.0 --character-set-server=utf8
-
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: ${{ matrix.php-version }}
-        extensions: mbstring, intl, apcu, memcached, redis, pdo_${{ matrix.db-type }}
-        ini-values: apc.enable_cli = 1
-        coverage: pcov
-
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Get date part for cache key
-      id: key-date
-      run: echo "::set-output name=date::$(date +'%Y-%m')"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}-${{ matrix.prefer-lowest }}
+        extensions: mbstring, intl, pdo_sqlite
+        coverage: none
 
     - name: Composer install
       run: |
-        if [[ ${{ matrix.php-version }} == '8.0' ]]; then
-          composer install --ignore-platform-reqs
-        elif ${{ matrix.prefer-lowest == 'prefer-lowest' }}; then
-          composer update --prefer-lowest --prefer-stable
-        else
-          composer update
-        fi
-
-        if [[ ${{ matrix.php-version }} == '7.4' ]]; then
-          composer require --dev pcov/clobber
-        fi
-
-    - name: Configure PHPUnit matcher
-      if: matrix.php-version == '7.4' && matrix.db-type == 'mysql'
-      run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+        composer update
+        composer run-script post-install-cmd --no-interaction
 
     - name: Run PHPUnit
-      env:
-        DB: cms
-        MAIL_HOST: smtp.mailtrap.io
-        MAIL_USERNAME: b97cb857629c4e
-        MAIL_PASSWORD: 69e83f96de9863
-        MAIL_PORT: 2525
-        MAIL_FROM: webmaster@eaglenavigator.com
-        DB_HOST: localhost
-        DB_PORT: 3306
-        DB_DATABASE: cms
-        DB_USERNAME: root
-        DB_PASSWORD: ''
-        REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
-        MEMCACHED_PORT: ${{ job.services.memcached.ports['11211'] }}
       run: |
-        if [[ ${{ matrix.db-type }} == 'mysql' && ${{ matrix.php-version }} == '7.4' ]]; then export db_dsn='mysql://root:root@127.0.0.1/$DB?encoding=utf8'; fi
-          vendor/bin/phpunit
+        cp config/app_local.example.php config/app_local.php
+        vendor/bin/phpunit
+      env:
+        DATABASE_TEST_URL: sqlite://./testdb.sqlite
 
-
-    - name: Submit code coverage
-      if: matrix.php-version == '7.4'
-      uses: codecov/codecov-action@v1
-
-  cs-stan:
+  coding-standard:
     name: Coding Standard & Static Analysis
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-22.04
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     - name: Setup PHP
       uses: shivammathur/setup-php@v2
       with:
         php-version: '7.4'
-        extensions: mbstring, intl, apcu, memcached, redis
-        coverage: xdebug
-
-    - name: Get composer cache directory
-      id: composer-cache
-      run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-    - name: Get date part for cache key
-      id: key-date
-      run: echo "::set-output name=date::$(date +'%Y-%m')"
-
-    - name: Cache composer dependencies
-      uses: actions/cache@v1
-      with:
-        path: ${{ steps.composer-cache.outputs.dir }}
-        key: ${{ runner.os }}-composer-${{ steps.key-date.outputs.date }}-${{ hashFiles('composer.json') }}
+        extensions: mbstring, intl
+        coverage: none
+        tools: cs2pr, phpstan:1
 
     - name: Composer install
+      run: composer install
+
     - name: Run PHP CodeSniffer
-      run: composer cs-check
+      run: vendor/bin/phpcs --report=checkstyle src/ tests/ | cs2pr
+
+    - name: Run phpstan
+      if: always()
+      run: phpstan
