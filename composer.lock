@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "27e5791e2d64e40d9528081614e672ad",
+    "content-hash": "06bbc04a250342a52daf037b63018ec0",
     "packages": [
         {
             "name": "aura/intl",
@@ -643,16 +643,16 @@
         },
         {
             "name": "phpstan/phpstan",
-            "version": "1.9.9",
+            "version": "1.9.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "f68d7cc3d0638a01bc6321cb826e4cae7fa6884d"
+                "reference": "60f3d68481eef216199eae7a2603cd5fe124d464"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/f68d7cc3d0638a01bc6321cb826e4cae7fa6884d",
-                "reference": "f68d7cc3d0638a01bc6321cb826e4cae7fa6884d",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/60f3d68481eef216199eae7a2603cd5fe124d464",
+                "reference": "60f3d68481eef216199eae7a2603cd5fe124d464",
                 "shasum": ""
             },
             "require": {
@@ -682,7 +682,7 @@
             ],
             "support": {
                 "issues": "https://github.com/phpstan/phpstan/issues",
-                "source": "https://github.com/phpstan/phpstan/tree/1.9.9"
+                "source": "https://github.com/phpstan/phpstan/tree/1.9.11"
             },
             "funding": [
                 {
@@ -698,7 +698,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2023-01-11T14:39:22+00:00"
+            "time": "2023-01-12T14:04:13+00:00"
         },
         {
             "name": "psr/container",
@@ -4580,6 +4580,61 @@
             },
             "abandoned": true,
             "time": "2018-08-09T05:50:03+00:00"
+        },
+        {
+            "name": "phungduckien/phpstan-cakephp",
+            "version": "0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PhungDucKien/phpstan-cakephp.git",
+                "reference": "55e389c005be1496ca3ed477423bc26e68f275a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PhungDucKien/phpstan-cakephp/zipball/55e389c005be1496ca3ed477423bc26e68f275a5",
+                "reference": "55e389c005be1496ca3ed477423bc26e68f275a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12 || ^1.2",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhungDucKien\\PHPStan\\CakePHP\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Phung Duc Kien",
+                    "email": "boko85vn@gmail.com"
+                }
+            ],
+            "description": "CakePHP extension for PHPStan",
+            "keywords": [
+                "PHPStan",
+                "cakephp"
+            ],
+            "support": {
+                "issues": "https://github.com/PhungDucKien/phpstan-cakephp/issues",
+                "source": "https://github.com/PhungDucKien/phpstan-cakephp/tree/0.1.1"
+            },
+            "time": "2021-12-20T16:38:34+00:00"
         },
         {
             "name": "psy/psysh",

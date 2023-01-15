@@ -90,7 +90,7 @@ class ArticlesController extends AppController
             'contain' => ['Tags'],
         ]);
 
-        if ($this->request->is('post')) {est->getData());
+        if ($this->request->is('post')) {
             if ($this->Articles->save($article)) {
                 $this->Flash->success(__('The article has been saved.'));
 

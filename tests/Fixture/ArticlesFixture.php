@@ -65,6 +65,16 @@ class ArticlesFixture extends TestFixture
                 'created' => '2023-01-02 04:46:14',
                 'modified' => '2023-01-02 04:46:14',
             ],
+            [
+                'id' => 3,
+                'user_id' => 3,
+                'title' => 'Dolor sit amet',
+                'slug' => '',
+                'body' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+                'published' => false,
+                'created' => '2023-01-02 04:46:14',
+                'modified' => '2023-01-02 04:46:14',
+            ],
         ];
         parent::init();
     }

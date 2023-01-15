@@ -1,7 +1,7 @@
 # CakePHP Application Skeleton
 
-
 [![Testing CakePHP with MySQL](https://github.com/nuzulfikrie/cakephp3-tutorial/actions/workflows/cakephp3.yml/badge.svg)](https://github.com/nuzulfikrie/cakephp3-tutorial/actions/workflows/cakephp3.yml)
+
 A skeleton for creating applications with [CakePHP](https://cakephp.org) 3.x.
 
 The framework source code can be found here: [cakephp/cakephp](https://github.com/cakephp/cakephp).
@@ -50,20 +50,25 @@ framework by default. You can, however, replace it with any other library or
 custom styles.
 
 ## Tutorial
+
 guide here [docs/getting_started.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/getting_started.MD).
 
 SQL here [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/database_sql.md)
 
-
 ## Run SQL in your desired MYSQL database
+
 USE SQL  [docs/database_sql.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/database_sql.md)
 
 ## Installing PHP
+
 Installing PHP Guide 👉 [docs/installing_php.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/installing_php.md)
+
 ## Server configuration
+
 Server Configuration [docs/server_configuration.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/server_configuration.md)
 
 ## Start cakephp 3 local server
+
 ```
 bin/cake server -p 8765
 ```
@@ -77,7 +82,7 @@ bin/cake server -p 8765
 - for general configuration, edit `config/app.php`.This file is not tracked by git. So, you can put your local configuration here.
 - for local configuration, edit `config/app_local.php` , this will be used in running the application locally.Please note that, do not commit this file to git. To avoid this, add this file to `.gitignore` file. So that we don't accidentally commit file containing sensitive information.
 
- - Database configuration set for `default` database connection
+- Database configuration set for `default` database connection
 
 ````
 //config/app_local.php
@@ -103,13 +108,12 @@ bin/cake server -p 8765
 
 ## Next we create a model,a controller, and a view for the controller
 
-Continue here [docs/creating_controller.md](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/creating_controller.md)
+Continue here [Creating controller](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/creating_controller.md)
 
 ## guide passing data and manipulating
-guide here [docs/passingandmanipulating.md](
 
+guide here [Passing And manipulating](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/passingandmanipulating.md)
 
+## guide for unit testing
 
-
-
-
+guide here [Unit testing in cakephp3](https://github.com/nuzulfikrie/cakephp3-tutorial/blob/main/docs/unit_testing_in_cakephp3.md)

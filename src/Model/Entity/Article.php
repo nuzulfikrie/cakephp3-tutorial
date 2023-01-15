@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Model\Entity;
 
 use Cake\ORM\Entity;
@@ -35,4 +36,16 @@ class Article extends Entity
         'created' => true,
         'modified' => true,
     ];
+
+    //set published
+    public function setPublished($value)
+    {
+        if ($value === true) {
+            $this->set('published', true);
+        } else {
+            $this->set('published', false);
+        }
+
+        return $this;
+    }
 }

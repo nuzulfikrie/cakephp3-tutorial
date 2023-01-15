@@ -2,10 +2,15 @@
 
 namespace App\Model\Table;
 
+use ArrayObject;
+use Cake\Datasource\EntityInterface;
+use Cake\Event\Event;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Utility\Text;
 use Cake\Validation\Validator;
 
 /**
@@ -19,7 +24,8 @@ use Cake\Validation\Validator;
  * @method \App\Model\Entity\Article[] newEntities(array $data, array $options = [])
  * @method \App\Model\Entity\Article|false save(\Cake\Datasource\EntityInterface $entity, $options = [])
  * @method \App\Model\Entity\Article saveOrFail(\Cake\Datasource\EntityInterface $entity, $options = [])
- * @method \App\Model\Entity\Article patchEntity(\Cake\Datasource\EntityInterface $entity, array $data, array $options = [])
+ * @method \App\Model\Entity\Article patchEntity(\Cake\Datasource\
+ * EntityInterface $entity, array $data, array $options = [])
  * @method \App\Model\Entity\Article[] patchEntities($entities, array $data, array $options = [])
  * @method \App\Model\Entity\Article findOrCreate($search, callable $callback = null, $options = [])
  *
@@ -99,6 +105,7 @@ class ArticlesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
+        $rules->add($rules->isUnique(['title']));
         $rules->add($rules->isUnique(['slug']));
         $rules->add($rules->existsIn(['user_id'], 'Users'));
 
@@ -108,8 +115,7 @@ class ArticlesTable extends Table
 
     public function findAllArticles()
     {
-        $articles = $this->find('all');
-        return $articles;
+        return $this->find('all');
     }
 
     /**
@@ -123,17 +129,36 @@ class ArticlesTable extends Table
         $this->Tags = TableRegistry::getTableLocator()->get('Tags');
         $tags = $this->Tags->findByTitle($tag)->contain(['ArticlesTags'])->select()->toList();
 
-        foreach($tags as $t){
+        foreach ($tags as $t) {
             $idArticle[] =  $t->id;
         }
 
-        return $this->find('all',
-        [
-            'conditions' => [
-                'Articles.id IN' => $idArticle,
-                        ],
-            'contains' => ['Tags'],
-        ])->toList();
+        return $this->find(
+            'all',
+            [
+                'conditions' => [
+                    'Articles.id IN' => $idArticle,
+                ],
+                'contains' => ['Tags'],
+            ]
+        )->toList();
+    }
 
+    public function publishArticle($id)
+    {
+        $article = $this->get($id);
+        $article = $article->setPublished(true);
+        $this->save($article);
+    }
+
+    public function slugArticle(Entity $article)
+    {
+        $article->slug = Text::slug($article->title, '-');
+        return $article;
+    }
+
+    public function beforeSave(Event $event, EntityInterface $entity, ArrayObject $options)
+    {
+        $this->slugArticle($entity);
     }
 }
