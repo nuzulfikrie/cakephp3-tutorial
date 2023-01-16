@@ -56,7 +56,7 @@ jobs:
       with:
         php-version: '7.4'
         extensions: mbstring, intl
-        coverage: none
+        coverage: xdebug
         tools: cs2pr, phpstan:1
 
     - name: Composer install
@@ -67,4 +67,4 @@ jobs:
 
     - name: Run phpstan
       if: always()
-      run: phpstan
+      run: phpstan analyse src/ --level=7

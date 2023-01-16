@@ -1,12 +1,15 @@
 <?php
+
 namespace App\Model\Table;
 
+use App\Model\Entity\User;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Cake\Mailer\MailerAwareTrait;
 use Cake\Core\Exception\Exception;
+
 /**
  * Users Model
  *
@@ -31,7 +34,7 @@ class UsersTable extends Table
     /**
      * Initialize method
      *
-     * @param array $config The configuration for the Table.
+     * @param array <mixed> $config array $config The configuration for the Table.
      * @return void
      */
     public function initialize(array $config)
@@ -45,9 +48,11 @@ class UsersTable extends Table
         $this->addBehavior('Timestamp');
 
         $this->hasMany(
-            'Articles', [
-            'foreignKey' => 'user_id',
-        ]);
+            'Articles',
+            [
+                'foreignKey' => 'user_id',
+            ]
+        );
     }
 
     /**
@@ -98,8 +103,10 @@ class UsersTable extends Table
     }
     /***
      *  find user by first name
+     *
+     * @return \Cake\Datasource\EntityInterface|null
      */
-    public function findUserByName(string $username)
+    public function findUserByName(string $username): ?\Cake\Datasource\EntityInterface
     {
         return $this->find('all', [
             'conditions' => [
@@ -108,22 +115,25 @@ class UsersTable extends Table
         ])->first();
     }
 
-    public function findAuth(\Cake\ORM\Query $query,array $options){
+    public function findAuth(\Cake\ORM\Query $query, array $options): ?\Cake\ORM\Query
+    {
         return $query->find('all');
     }
 
     /**
      * register user
-     * @param array $data
+     *
+     * @param array<mixed> $data
      * @return \App\Model\Entity\User|false $user
      * */
-    public function registerUser(array $data){
+    public function registerUser(array $data): ?User
+    {
 
         //logic for token
         $user = $this->newEntity();
         $user = $this->patchEntity($user, $data);
 
-        $token = sha1(rand(0,100) . time());
+        $token = sha1(rand(0, 100) . time());
         $user->token = $token;
         $user->token_expires = date("Y-m-d H:i:s", time() + 3600);
 
@@ -131,7 +141,7 @@ class UsersTable extends Table
 
         $user = $this->save($user);
 
-        if($user){
+        if ($user) {
             //send email  to user
 
             $email = $user->email;
@@ -145,14 +155,11 @@ class UsersTable extends Table
             ];
             try {
                 $this->getMailer('Usersmailer')->send('welcome', [$dataEmail]);
-
             } catch (\Exception $th) {
                 throw new Exception("Error Processing Request", 1);
-
             }
         }
 
         return $user;
-
     }
 }

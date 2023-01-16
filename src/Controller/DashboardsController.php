@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Controller\AppController;
@@ -18,6 +19,9 @@ class DashboardsController extends AppController
      */
     public function index()
     {
+        $this->viewBuilder()->setLayout(false);
+        $this->render(null, null);
 
+        return $this->response->withStringBody('Hello World')->withStatus(200);
     }
 }
