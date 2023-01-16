@@ -44,8 +44,6 @@ jobs:
         MAIL_PASSWORD: 69e83f96de9863
         MAIL_PORT: 2525
         MAIL_FROM: webmaster@eaglenavigator.com
-        MAIL_FROM: webmaster@eaglenavigator.com
-
       run: |
         cp config/app_local.example.php config/app_local.php
         vendor/bin/phpunit
