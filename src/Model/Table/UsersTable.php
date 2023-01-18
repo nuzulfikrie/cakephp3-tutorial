@@ -126,7 +126,7 @@ class UsersTable extends Table
      * @param array<mixed> $data
      * @return \App\Model\Entity\User|false $user
      * */
-    public function registerUser(array $data): ?User
+    public function registerUser(array $data, bool $notify = false): ?User
     {
 
         //logic for token
@@ -153,6 +153,10 @@ class UsersTable extends Table
                 'token' => $token,
                 'expires' => date("Y-m-d H:i:s", time() + 3600),
             ];
+
+            if (!$notify) {
+                return $user;
+            }
             try {
                 $this->getMailer('Usersmailer')->send('welcome', [$dataEmail]);
             } catch (\Exception $th) {

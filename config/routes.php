@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Routes configuration
  *
@@ -43,6 +44,7 @@ use Cake\Routing\Route\DashedRoute;
  * constructor in your `src/Application.php` file to change this behavior.
  *
  */
+
 Router::defaultRouteClass(DashedRoute::class);
 
 Router::scope('/', function (RouteBuilder $routes) {
@@ -67,21 +69,31 @@ Router::scope('/', function (RouteBuilder $routes) {
 
 
     // LOGIN
-     $routes->connect('/login', ['controller' => 'Users', 'action' => 'login'],[
+    $routes->connect('/login', ['controller' => 'Users', 'action' => 'login'], [
         '_name' => 'login',
-     ]);
+    ]);
     $routes->connect('/logout', ['controller' => 'Users', 'action' => 'logout']);
 
 
 
-    $routes->connect('/',
-        ['controller' => 'Dashboards', 'action' => 'index']);
+    $routes->connect(
+        '/',
+        ['controller' => 'Dashboards', 'action' => 'index']
+    );
 
     /*
      * ...and connect the rest of 'Pages' controller's URLs.
      */
     $routes->connect('/pages/*', ['controller' => 'Pages', 'action' => 'display']);
-
+    $routes->connect(
+        '/api/articles/index',
+        ['prefix' => 'api', 'plugin' => false, 'controller' => 'Articles', 'action' => 'index']
+    );
+    $routes->connect(
+        '/api/articles/view/:id',
+        ['prefix' => 'api', 'plugin' => false, 'controller' => 'Articles', 'action' => 'view'],
+        ['pass' => ['id'], 'id' => '[0-9]+']
+    );
     /*
      * Connect catchall routes for all controllers.
      *
@@ -108,10 +120,9 @@ Router::scope('/', function (RouteBuilder $routes) {
  * If you need a different set of middleware or none at all,
  * open new scope and define routes there.
  *
- * ```
- * Router::scope('/api', function (RouteBuilder $routes) {
- *     // No $routes->applyMiddleware() here.
- *     // Connect API actions here.
- * });
- * ```
  */
+
+
+
+    // No $routes->applyMiddleware() here.
+    // Connect API actions here.

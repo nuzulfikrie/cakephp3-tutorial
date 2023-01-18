@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Test\TestCase\Model\Table;
 
 use App\Model\Table\UsersTable;
@@ -75,7 +76,7 @@ class UsersTableTest extends TestCase
     public function testSave()
     {
         $dataTest = [
-            'username' =>'ahmadRambo',
+            'username' => 'ahmadRambo',
             'first_name' => 'Ahmad',
             'last_name' => 'Doe',
             'email' => 'ahmad@abe.com',
@@ -84,23 +85,23 @@ class UsersTableTest extends TestCase
         $user = $this->Users->newEntity($dataTest);
         $result = $this->Users->save($user);
 
-        $this->assertInstanceOf('\App\Model\Entity\User',$result);
-        $this->assertNotEquals($result,false );
+        $this->assertInstanceOf('\App\Model\Entity\User', $result);
+        $this->assertNotEquals($result, false);
     }
 
     public function testRegisterUserHappy()
     {
         $dataTest = [
-            'username' =>'melissasaila',
+            'username' => 'melissasaila',
             'first_name' => 'Melissa',
             'last_name' => 'Do',
             'email' => 'do.melissa@abc.com',
             'password' => 'KucingGarong22',
         ];
 
-        $result = $this->Users->registerUser($dataTest);
-        $this->assertInstanceOf('\App\Model\Entity\User',$result);
-        $this->assertNotEquals($result,false);
+        $result = $this->Users->registerUser($dataTest, false);
+        $this->assertInstanceOf('\App\Model\Entity\User', $result);
+        $this->assertNotEquals($result, false);
     }
 
     // /**

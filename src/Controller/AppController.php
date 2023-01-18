@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -12,6 +13,7 @@
  * @since     0.2.9
  * @license   https://opensource.org/licenses/mit-license.php MIT License
  */
+
 namespace App\Controller;
 
 use Cake\Controller\Controller;
@@ -40,8 +42,25 @@ class AppController extends Controller
     public function initialize()
     {
         parent::initialize();
-        $this->loadComponent('Authentication.Authentication');
-        $this->Authentication->allowUnauthenticated(['login', 'logout', 'register']);
+
+        $prefix = $this->request->getParam('prefix'); // get the prefix - 'admin/articles/index  - ni prefix ni admin
+        $action = $this->request->getParam('action');
+        $controller = $this->request->getParam('controller');
+        //dump($prefix, $action, $controller);
+
+        if (in_array($prefix, ['api'], true)) {
+            $this->loadComponent('Authentication.Authentication');
+
+            $this->Authentication->setConfig([
+                'requireIdentity' => false
+            ]);
+            //$this->Authentication->allowUnauthenticated(['index']);
+        } else {
+            $this->loadComponent('Authentication.Authentication');
+
+            $this->Authentication->allowUnauthenticated(['login', 'logout', 'register']);
+        }
+
         $this->loadComponent('RequestHandler', [
             'enableBeforeRedirect' => false,
         ]);
@@ -64,12 +83,12 @@ class AppController extends Controller
         //      // If unauthorized, return them to page they were just on
         //     'UnauthorizedRedirect' => $this->referer()
         // ]);
-    
+
 
         // Allow the display action so our PagesController
         // continues to work. Also enable the read only actions.
         // $this->Auth->allow(['display', 'view', 'index']);
-     
+
 
         /*
          * Enable the following component for recommended CakePHP security settings.
@@ -80,7 +99,6 @@ class AppController extends Controller
 
     public function beforeFilter(Event $event)
     {
-        $this->Authentication->allowUnauthenticated(['login', 'welcome','register']);
-
+        $this->Authentication->allowUnauthenticated(['login', 'welcome', 'register']);
     }
 }

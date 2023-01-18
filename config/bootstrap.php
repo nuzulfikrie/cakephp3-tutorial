@@ -1,4 +1,5 @@
 <?php
+
 /**
  * CakePHP(tm) : Rapid Development Framework (https://cakephp.org)
  * Copyright (c) Cake Software Foundation, Inc. (https://cakefoundation.org)
@@ -52,12 +53,13 @@ use Cake\Utility\Security;
  * and decreased performance on each request. The purpose of the .env file is to emulate
  * the presence of the environment variables like they would be present in production.
  */
+
 if (!env('APP_NAME') && file_exists(CONFIG . '.env')) {
     $dotenv = new \josegonzalez\Dotenv\Loader([CONFIG . '.env']);
     $dotenv->parse()
-        ->putenv()
-        ->toEnv()
-        ->toServer();
+        ->putenv(true)
+        ->toEnv(true)
+        ->toServer(true);
 }
 
 /*
